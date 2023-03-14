@@ -7,7 +7,7 @@
     <hr>
     <div class="comment">
       <p>化粧フローチャート作成実験にご協力頂きありがとうございました．</p>
-      <p>実験はこちらで終了となります．<a href="https://forms.gle/iru2NN9TAKn4ZR5P9" target="_blank">こちら</a>から実験後アンケートへの回答をお願い致します．</p>
+      <p>実験はこちらで終了となります．<a href="https://forms.gle/22CEWSrk5ELoa8cs5" target="_blank">こちら</a>から実験後アンケートへの回答をお願い致します．</p>
     </div>
   </div>
 </template>
