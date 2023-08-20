@@ -5,6 +5,7 @@ export default createStore({
     /* ユーザーデータ */
     userName: "",
     userId: "",
+    downloadData: [],
     turn: 1, //ターン数
     /* 開始・終了ノードの有無 */
     outputN: false,
@@ -25,6 +26,9 @@ export default createStore({
     setUserData: function(state, userData){
       state.userName = userData.name,
       state.userId = userData.id
+    },
+    setDownloadData: function(state, selectCheckData){
+      state.downloadData = selectCheckData
     },
     setTurn: function(state, num){
       state.turn = state.turn + num

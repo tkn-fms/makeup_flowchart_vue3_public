@@ -2,11 +2,10 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import axios from "axios"
 
 //変数
 const userName = ref("")
-const userPass = ref("")
+const downloadData = ref([])
 const store = useStore()
 const router = useRouter()
 
@@ -17,16 +16,15 @@ const checkName = computed({
     checkForm
   }
 })
-const checkPass = computed({
-  get: () => userPass.value,
+const checkData = computed({
+  get: () => downloadData.value,
   set: (value) => {
-    userPass.value = value
-    checkForm
+    downloadData.value = value
   }
 })
 const checkForm = computed({
   get: () => {
-    if(userName.value != "" && userPass.value != ""){
+    if(userName.value != ""){
       return false
     }else{
       return true
@@ -39,25 +37,12 @@ const checkForm = computed({
 
 const submitUserData = () => {
   //ユーザーidの生成
-  const userId = Math.floor(1000+Math.random() * 9000)
-  //送信データの生成
-  const userParams = new URLSearchParams()
-  userParams.append('userId', userId)
-  userParams.append('userName', userName.value)
-  userParams.append('userPass', userPass.value)
-  //データをDBに送信
-  axios.post('https://takano.nkmr.io/flowchart_user_post.php', userParams)
-  .then((response)=>{
-    //上手く行った時
-    console.log('status:',response.status)
-  }).catch((error)=>{
-    //失敗した時
-    console.log('err:',error)
-  })
+  const userId = Math.floor(10000+Math.random() * 90000)
   //ユーザーデータの保持
   store.commit("setUserData", { name: userName.value, id: userId })
-  console.log(store.state.userId)
-  console.log(store.state.userName)
+  store.commit("setDownloadData", downloadData)
+  console.log("id:"+store.state.userId+", name:"+store.state.userName)
+  console.log(store.state.downloadData)
   //フローチャート作成ページへ移行
   router.push('/flowchart')
 }
@@ -65,13 +50,14 @@ const submitUserData = () => {
 
 <template>
   <div class="home">
-    <h1>化粧フローチャート作成実験</h1>
+    <h1>Make-up FLOW 体験サイト</h1>
     <hr>
     <div class="description">
       <!-- 説明 -->
-      <p id="desc-title">化粧フローチャート作成実験にご協力下さりありがとうございます．</p>
-      <p id="desc-check">詳細な実験手順は<a href="https://takano.nkmr.io/b4/description/" target="_blank">こちら</a>に記載してありますので，</p>
-      <p id="desc-check"><strong>説明を全て読んでから</strong>実験にご参加頂くようよろしくお願い致します．</p>
+      <p id="desc-title">Make-up FLOWに興味をお持ち頂きありがとうございます．</p>
+      <p id="desc-title">こちらでは化粧フローチャート作成に特化したWebシステム，<br/>Make-up FLOWを用いて化粧フロチャートの作成を体験することができます．</p>
+      <p id="desc-check">詳細な作成手順は<a href="https://takano.nkmr.io/m1/description_test/" target="_blank">こちら</a>に記載してありますので，</p>
+      <p id="desc-check">説明を全て読んでからシステムの体験を開始してください．</p>
       <!-- 注意事項 -->
       <div id="heading">注意事項</div>
       <ul>
@@ -86,11 +72,6 @@ const submitUserData = () => {
               <li>ブラウザーのリロードボタン及び戻るボタンは押さないでください．</li>
             </td>
           </tr>
-          <tr>
-            <td>
-              <li>時間制限は無いため，適度に休憩を取りながらリラックスした状態で作成してください．</li>
-            </td>
-          </tr>
         </table>
       </ul>
       <!-- 問い合わせ先 -->
@@ -101,24 +82,28 @@ const submitUserData = () => {
             <td><li>氏名：髙野沙也香</li></td>
           </tr>
           <tr>
-            <td><li>メールアドレス：ev190535@meiji.ac.jp</li></td>
+            <td><li>メールアドレス：cs232026@meiji.ac.jp</li></td>
           </tr>
         </table>
       </ul>
-      <div class="login">
-        <div id="heading">ログイン</div>
+      <div class="start">
+        <div id="heading">体験準備</div>
         <ul id="none">
           <table>
             <tr>
-              <td><li>お名前（漢字表記・姓名間にスペースなし）とパスワード（自由）を入力してください．</li></td>
+              <td><li>体験終了時にほしいデータがあれば選択してください．</li></td>
+              <td>
+                <input type="checkbox" id="json" value="json" v-model="checkData">
+                <label for="json">json</label>
+                <input type="checkbox" id="svg" value="svg" v-model="checkData">
+                <label for="svg">svg</label>
+              </td>
             </tr>
             <tr>
+              <td><li>名前を入力して体験を開始してください．</li></td>
               <td>
-                <label for="name">名前：</label>
                 <input type="text" id="name" v-model="checkName">
-                <label for="password" class="password">パスワード：</label>
-                <input type="text" id="password" v-model="checkPass">
-                <button @click="submitUserData" :disabled="checkForm" :class="checkForm ? '' : 'ableButton'">ログイン</button>
+                <button @click="submitUserData" :disabled="checkForm" :class="checkForm ? '' : 'ableButton'">開始</button>
               </td>
             </tr>
           </table>
@@ -133,7 +118,7 @@ const submitUserData = () => {
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP");
 .home {
   width: 800px;
-  height: 700px;
+  height: button-680px;
   margin: 5px auto;
   border: 3px solid #3cb371;
   border-radius: 30px;
@@ -176,10 +161,10 @@ ol, ul{
 #none{
   list-style: none;
 }
-.password{
-  margin-left: 10px;
+label {
+  margin-right: 10px;
 }
-.login button {
+.start button {
   text-align: left;
   margin: 5px 5px 5px 30px;
   display       : inline-block;

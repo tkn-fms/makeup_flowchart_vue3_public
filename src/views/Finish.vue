@@ -3,11 +3,11 @@
 
 <template>
   <div class="finish">
-    <h1>化粧フローチャート作成実験</h1>
+    <h1>Make-up FLOW 体験サイト</h1>
     <hr>
     <div class="comment">
-      <p>化粧フローチャート作成実験にご協力頂きありがとうございました．</p>
-      <p>実験はこちらで終了となります．<a href="https://forms.gle/22CEWSrk5ELoa8cs5" target="_blank">こちら</a>から実験後アンケートへの回答をお願い致します．</p>
+      <p>化粧フローチャートの作成お疲れ様でした．体験はこちらで終了となります．</p>
+      <p>Make-up FLOWにご興味を抱いてくださったこと感謝申し上げます．</p>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP");
 .finish {
   width: 800px;
-  height: 300px;
+  height: 250px;
   margin: 5px auto;
   border: 3px solid #3cb371;
   border-radius: 30px;

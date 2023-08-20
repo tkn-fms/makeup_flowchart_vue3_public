@@ -16,8 +16,6 @@ import NodeField from '@/components/NodeField.vue'
 import TopMenu from '@/components/TopMenu.vue'
 //ライブラリの追加
 import VueSimpleContextMenu from 'vue-simple-context-menu'
-//import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
-import axios from "axios"
 import * as htmlToImage from "html-to-image"
 
 //初期設定
@@ -127,7 +125,7 @@ const changeEdges = (edge, type) => {
   //Skeysの更新
   Skeys = Object.keys(edgeSNum)
   if(type == "add"){
-    console.log("edgeSNumの更新(追加)")
+    // console.log("edgeSNumの更新(追加)")
     if(Skeys.includes(source)){
       edgeSNum[source].push(eid)
     }else{
@@ -136,7 +134,7 @@ const changeEdges = (edge, type) => {
       Skeys = Object.keys(edgeSNum)
     }
   }else if(type == "remove"){
-    console.log("edgeSNumの更新(削除)")
+    // console.log("edgeSNumの更新(削除)")
     var sameEdgeSNum = edgeSNum[source]
     if(sameEdgeSNum.length >= 2){
       for(var j=0; j<sameEdgeSNum.length; j++){
@@ -149,7 +147,7 @@ const changeEdges = (edge, type) => {
       Skeys = Object.keys(edgeSNum)
     }
   }else if(type == "change"){
-    console.log("edgeSNumの更新(変更)")
+    // console.log("edgeSNumの更新(変更)")
   }else{
     return
   }
@@ -205,7 +203,7 @@ onNodesChange((params) => {
   //params add:[type, item{}] remove:[type, id] select:[type, id, selected]
   for(var q=0; q<params.length; q++){
     if(params[q].type == "add"){
-      console.log("ノードの追加")
+      // console.log("ノードの追加")
       //メイクノードだったら
       if(params[q].item.type == "customMake"){
         var nodeitems = params[q].item
@@ -232,7 +230,7 @@ onNodesChange((params) => {
         }
       }
     }else if(params[q].type == "remove"){
-      console.log("ノードの削除")
+      // console.log("ノードの削除")
       if(params[q].id.indexOf('make') > -1){ //メイクノードだったら
         const rnode = getNode.value(params[q].id)
         const rdata = rnode.data
@@ -373,7 +371,7 @@ onEdgesChange((params) => {
 })
 /* エッジの追加時に発火する関数 onConnect->onEdgesChange */
 onConnect((params) => {
-  console.log("エッジの追加")
+  // console.log("エッジの追加")
   //params:[source, sourceHandle, target, targetHandle]
 
   //同じソースのエッジの本数を取得する
@@ -538,35 +536,29 @@ const onDrop = (event) => {
 }
 
 const submitFlowchart = () => {
-  console.log("データのmysqlへの送信&実験終了")
-  const params2 = new URLSearchParams()
-  params2.append('userId', store.state.userId)
-  params2.append('userName', store.state.userName)
-  params2.append('flowchart', JSON.stringify(toObject()))
-  axios.post('https://takano.nkmr.io/flowchart_post.php', params2)
-  .then((response)=>{
-    //上手く行った時
-    console.log('status:',response.status)
-  }).catch((error)=>{
-    //失敗した時
-    console.log('err:',error)
-  })
+  // console.log("データのダウンロード&実験終了")
   //フローチャートデータのダウンロード
-  const fileName2 = store.state.userName+".json"
-  const flowData2 = JSON.stringify(toObject())
-  const link2 = document.createElement("a")
-  link2.href = "data:text/plain," + encodeURIComponent(flowData2)
-  link2.download = fileName2
-  link2.click()
+  console.log(store.state.downloadData.indexOf("json"))
+  console.log(store.state.downloadData.indexOf("svg"))
+  if(store.state.downloadData.indexOf("json") != -1){
+    const fileName2 = store.state.userName+".json"
+    const flowData2 = JSON.stringify(toObject())
+    const link2 = document.createElement("a")
+    link2.href = "data:text/plain," + encodeURIComponent(flowData2)
+    link2.download = fileName2
+    link2.click()
+  }
   //フローチャート画像のダウンロード
-  htmlToImage.toSvg(document.querySelector('.vue-flow__container'))
-  .then(function (dataUrl2) {
-    // 私の場合はダウンロード処理を実行
-    const a2 = document.createElement('a')
-    a2.download = store.state.userName+'.svg'
-    a2.href = dataUrl2
-    a2.click()
-  })
+  if(store.state.downloadData.indexOf("svg") != -1){
+    htmlToImage.toSvg(document.querySelector('.vue-flow__container'))
+    .then(function (dataUrl2) {
+      // 私の場合はダウンロード処理を実行
+      const a2 = document.createElement('a')
+      a2.download = store.state.userName+'.svg'
+      a2.href = dataUrl2
+      a2.click()
+    })
+  }
   //実験終了画面へ移動
   setTimeout(function(){
     router.push('/finish')
