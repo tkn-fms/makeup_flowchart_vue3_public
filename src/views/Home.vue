@@ -56,7 +56,7 @@ const submitUserData = () => {
       <!-- 説明 -->
       <p id="desc-title">Make-up FLOWに興味をお持ち頂きありがとうございます．</p>
       <p id="desc-title">こちらでは化粧フローチャート作成に特化したWebシステム，<br/>Make-up FLOWを用いて化粧フロチャートの作成を体験することができます．</p>
-      <p id="desc-check">詳細な作成手順は<a href="https://takano.nkmr.io/m1/description_test/" target="_blank">こちら</a>に記載してありますので，</p>
+      <p id="desc-check">詳細な作成手順は<a href="https://takano.nkmr.io/m1/mf_test_description/" target="_blank">こちら</a>に記載してありますので，</p>
       <p id="desc-check">説明を全て読んでからシステムの体験を開始してください．</p>
       <!-- 注意事項 -->
       <div id="heading">注意事項</div>
