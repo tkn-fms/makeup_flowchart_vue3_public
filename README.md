@@ -1,5 +1,4 @@
-# makeup_flowchart_vue3_public
-体験版Make-up FLOW
+# 体験版Make-up FLOW
 
 ## Project setup
 ```
